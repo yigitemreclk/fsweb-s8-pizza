@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import workintech from '/workintech.svg'
-import './App.css'
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./components/Home"; // Ana sayfa bileşeninin yolu (kendi klasör yapına göre kontrol edebilirsin)
+import OrderForm from "./components/OrderForm";
+import Success from "./components/Success";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [formData, setFormData] = useState({
+    boyut: "",
+    hamur: "",
+    malzemeler: [],
+    not: "",
+    adet: 1,
+  });
+
+  const [submittedOrder, setSubmittedOrder] = useState(null);
 
   return (
-    <>
-      <div>
-        <a href="https://github.com/Workintech/fsweb-s7-challenge-pizza" target="_blank">
-          <img src={workintech} className="logo" alt="Workintech logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Workintech + 🍕</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Absolute Acı Pizza sayısı {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Workintech or Pizza logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route
+        path="/siparis"
+        element={
+          <OrderForm
+            formData={formData}
+            setFormData={setFormData}
+            onSubmitOrder={setSubmittedOrder}
+          />
+        }
+      />
+      <Route path="/onay" element={<Success order={submittedOrder} />} />
+    </Routes>
+  );
 }
-
-export default App
